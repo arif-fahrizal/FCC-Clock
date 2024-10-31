@@ -20,34 +20,27 @@ const App: FunctionComponent = () => {
 
   useEffect(() => {
     if (!timerState.isRunning) return
-
-    if(timerState.timeRemaining === 0) return
-
+  
     const timer: number = setInterval(() => {
       setTimerState( prev => {
-        if (prev.timeRemaining <= 1) {
-          clearInterval(timer)
-          return { ...prev, timeRemaining: 0 }
+        if (prev.timeRemaining <= 0) {
+
+          audio.play();
+          audio.currentTime = 2
+  
+          return {
+            ...prev,
+            mode: prev.mode === 'Session' ? 'Break' : 'Session',
+            timeRemaining: prev.mode === 'Session' ? breakDuration : sessionDuration,
+          }
         }
         return { ...prev, timeRemaining: prev.timeRemaining - 1 }
       })
-    }, 1000)
-
-    return () => clearInterval(timer)
-  }, [timerState.isRunning, timerState.timeRemaining])
-
-  useEffect(() => {
-    if (timerState.timeRemaining > 0) return
-
-    audio.play()
-    audio.currentTime = 2
-
-    setTimerState( prev => ({
-      ...prev,
-      mode: prev.mode == 'Session' ? 'Break' : 'Session',
-      timeRemaining: prev.mode == 'Session' ? breakDuration : sessionDuration
-    }))
-  }, [timerState, breakDuration, sessionDuration, audio])
+    }, 1000);
+  
+    return () => clearInterval(timer);
+  }, [timerState.isRunning, timerState.timeRemaining, breakDuration, sessionDuration, audio]);
+  
 
   const reset = () => {
     setBreakDuration(initialBreakDuration)
@@ -62,11 +55,11 @@ const App: FunctionComponent = () => {
   }
 
   const changeTime = (type: 'break' | 'session', time: number) => {
-    if (timerState.isRunning) return;
+    if (timerState.isRunning) return
 
-    type === 'break' 
-    ? setBreakDuration(time) 
-    : (setSessionDuration(time), setTimerState({ timeRemaining: time, mode: 'Session', isRunning: false }))
+    type === 'break'
+      ? setBreakDuration(time)
+      : (setSessionDuration(time), setTimerState({ timeRemaining: time, mode: 'Session', isRunning: false }))
   }
 
   return (
