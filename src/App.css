@@ -1,45 +1,72 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap');
+
 *{
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Orbitron', sans-serif;
 }
 
 body{
-  display: grid;
-  place-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 100%;
+  min-height: 700px;
   height: 100dvh;
+  text-align: center;
   color: white;
-  background-color: #343a40;
+  background-color: #000;
 }
 
 button{
-  display: grid;
-  place-items: center;
-  width: 40px;
-  aspect-ratio: 1/1;
+  padding: 1rem;
+  font-size: large;
   color: white;
+  border-radius: 10px;
   border: none;
   outline: none;
-  border-radius: 5px;
-  transition: all .5s ease;
+  background-color: #1a1a1a;
   cursor: pointer;
 }
 
 button:active{
-  mix-blend-mode: difference;
+  background-color: #141414;
 }
 
-
 #app{
+  position: relative;
   display: grid;
   gap: 2rem;
-  width: 800px;
-  padding: 2rem;
-  text-align: center;
+}
+
+#title{
+  font-size: 2.5rem;
+}
+
+#timer{
+  display: grid;
+  gap: 1rem;
+}
+
+#timer button {
+  width: 110px;
+}
+
+#timer #reset{
+  margin-left: 1rem;
+}
+
+#time-left{
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 1000px;
+  font-size: 17rem;
+  font-weight: 600;
   border-radius: 25px;
-  border: 3px solid #4361ee;
+  background-color: #1a1a1a;
 }
 
 #length-control{
@@ -49,26 +76,8 @@ button:active{
 
 .timesetter{
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
-  font-size: 24px;
   margin-top: 10px;
-}
-
-#timer{
-  display: grid;
-  place-items: center;
-  gap: 1rem;
-}
-
-#timer span{
-  font-size: 24px;
-}
-
-#timer div{
-  display: flex;
-}
-
-#timer #reset{
-  margin-left: 2rem;
+  font-size: x-large;
 }

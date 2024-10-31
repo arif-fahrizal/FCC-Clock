@@ -13,9 +13,9 @@ export const TimeSetter: FunctionComponent<Props> = ({time, setTime, type}) => {
 
   return (
     <div className='timesetter'>
-      <button id={`${type}-decrement`} onClick={() => (time > min ? setTime(type, time - min) : null)} style={{ backgroundColor: "#ff0054"}}><FaArrowDown size={20} /></button>
+      <button id={`${type}-decrement`} onClick={() => (time > min ? setTime(type, time - min) : null)}><FaArrowDown size={20} /></button>
       <span id={`${type}-length`}>{time / min}</span>
-      <button id={`${type}-increment`} onClick={() => (time < max ? setTime(type, time + min) : null)} style={{ backgroundColor: "#4361ee"}}><FaArrowUp size={20} /></button>
+      <button id={`${type}-increment`} onClick={() => (time < max ? setTime(type, time + min) : null)}><FaArrowUp size={20} /></button>
     </div>
   )
 }

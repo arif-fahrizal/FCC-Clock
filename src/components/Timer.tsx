@@ -1,5 +1,4 @@
 import { FunctionComponent } from 'react'
-import { FaPause, FaPlay, FaUndo } from 'react-icons/fa'
 import { TimerState } from '../types'
 import { TimeFormat } from './TimeFormat'
 
@@ -15,10 +14,10 @@ const Timer: FunctionComponent<Props> = ({ timerState, reset, startStop }) => {
       <h2 id='timer-label'>{timerState.mode}</h2>
       <span id='time-left'>{TimeFormat(timerState.timeRemaining)}</span>
       <div>
-        <button id='start_stop' onClick={() => startStop(timerState)} style={{ backgroundColor: "#4361ee"}}>
-          {timerState.isRunning ? <FaPause size={20} /> : <FaPlay size={20} />}
+        <button id='start_stop' onClick={() => startStop(timerState)} >
+          {timerState.isRunning ? 'Pause' : 'Start' }
         </button>
-        <button id='reset' onClick={reset} style={{ backgroundColor: "#ff0054"}}><FaUndo size={20} /></button>
+        <button id='reset' onClick={reset} >Restart</button>
       </div>
     </div>
   )

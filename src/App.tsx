@@ -64,7 +64,8 @@ const App: FunctionComponent = () => {
 
   return (
     <div id='app'>
-      <h1 id='title'>25 + 5 Clock</h1>
+      <h1 id='title'>POMODORO TIMER</h1>
+      <Timer timerState={timerState} startStop={startStop} reset={reset} />
       <div id='length-control'>
         <div className='break'>
           <h2 id='break-label'>Break Length</h2>
@@ -75,7 +76,6 @@ const App: FunctionComponent = () => {
           <TimeSetter time={sessionDuration} setTime={changeTime} type={'session'} />
         </div>
       </div>
-      <Timer timerState={timerState} startStop={startStop} reset={reset} />
       <audio src="https://cdn.freecodecamp.org/testable-projects-fcc/audio/BeepSound.wav" id='beep' />
     </div>
   )

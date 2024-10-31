@@ -1,4 +1,4 @@
-export const TimeFormat = (time: number): string => {
+export const TimeFormat = (time: number) => {
   const minutes = Math.floor(time / 60)
   const seconds = time % 60
 
