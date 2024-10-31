@@ -4,61 +4,69 @@ import { TimeSetter } from './components/TimeSetter'
 import Timer from './components/Timer'
 import { TimerState } from './types'
 
-const initialValueBreak: number = .05 * 60          //? 300s or 5mnt
-const initialValueSession: number = .05 * 60       //? 1500s or 25mnt
+const initialBreakDuration: number = 5 * 60          //? 300s or 5mnt
+const initialSessionDuration: number = 25 * 60       //? 1500s or 25mnt
 
 const App: FunctionComponent = () => {
-  const [breakLength, setBreakLength] = useState<number>(initialValueBreak)
-  const [sessionLength, setSessionLength] = useState<number>(initialValueSession)
+  const [breakDuration, setBreakDuration] = useState<number>(initialBreakDuration)
+  const [sessionDuration, setSessionDuration] = useState<number>(initialSessionDuration)
   const [timerState, setTimerState] = useState<TimerState>({
-    time: sessionLength,
-    timeType: 'Session',
-    timeRunning: false
+    timeRemaining: sessionDuration,
+    mode: 'Session',
+    isRunning: false
   })
 
   const audio = document.getElementById('beep') as HTMLAudioElement
 
   useEffect(() => {
-    if (!timerState.timeRunning) return
+    if (!timerState.isRunning) return
+
+    if(timerState.timeRemaining === 0) return
 
     const timer: number = setInterval(() => {
-        setTimerState((prev) => ({ ...prev, time: prev.time - 1 }))
-      }, 1000)
+      setTimerState( prev => {
+        if (prev.timeRemaining <= 1) {
+          clearInterval(timer)
+          return { ...prev, timeRemaining: 0 }
+        }
+        return { ...prev, timeRemaining: prev.timeRemaining - 1 }
+      })
+    }, 1000)
 
     return () => clearInterval(timer)
-  }, [timerState.timeRunning])
+  }, [timerState.isRunning, timerState.timeRemaining])
 
   useEffect(() => {
-    if (timerState.time >= 0) return;
+    if (timerState.timeRemaining > 0) return
 
     audio.play()
     audio.currentTime = 2
 
     setTimerState( prev => ({
       ...prev,
-      timeType: prev.timeType === 'Session' ? 'Break' : 'Session',
-      time: prev.timeType === 'Session' ? breakLength : sessionLength
+      mode: prev.mode == 'Session' ? 'Break' : 'Session',
+      timeRemaining: prev.mode == 'Session' ? breakDuration : sessionDuration
     }))
-  }, [timerState, breakLength, sessionLength, audio])
+  }, [timerState, breakDuration, sessionDuration, audio])
 
   const reset = () => {
-    setBreakLength(initialValueBreak)
-    setSessionLength(initialValueSession)
-    setTimerState({ time: initialValueSession, timeType: 'Session', timeRunning: false })
+    setBreakDuration(initialBreakDuration)
+    setSessionDuration(initialSessionDuration)
+    setTimerState({ timeRemaining: initialSessionDuration, mode: 'Session', isRunning: false })
     audio.pause()
     audio.currentTime = 0
   }
 
   const startStop = () => {
-    setTimerState((prev) => ({ ...prev, timeRunning: !prev.timeRunning }))
+    setTimerState((prev) => ({ ...prev, isRunning: !prev.isRunning }))
   }
 
   const changeTime = (type: 'break' | 'session', time: number) => {
-    if (timerState.timeRunning) return;
+    if (timerState.isRunning) return;
 
     type === 'break' 
-    ? setBreakLength(time) 
-    : (setSessionLength(time), setTimerState({ time: time, timeType: 'Session', timeRunning: false }))
+    ? setBreakDuration(time) 
+    : (setSessionDuration(time), setTimerState({ timeRemaining: time, mode: 'Session', isRunning: false }))
   }
 
   return (
@@ -67,11 +75,11 @@ const App: FunctionComponent = () => {
       <div id='length-control'>
         <div className='break'>
           <h2 id='break-label'>Break Length</h2>
-          <TimeSetter time={breakLength} setTime={changeTime} type={'break'} />
+          <TimeSetter time={breakDuration} setTime={changeTime} type={'break'} />
         </div>
         <div className='session'>
           <h2 id='session-label'>Session Length</h2>
-          <TimeSetter time={sessionLength} setTime={changeTime} type={'session'} />
+          <TimeSetter time={sessionDuration} setTime={changeTime} type={'session'} />
         </div>
       </div>
       <Timer timerState={timerState} startStop={startStop} reset={reset} />

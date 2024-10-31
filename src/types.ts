@@ -1,5 +1,5 @@
 export interface TimerState {
-  time: number
-  timeType: "Session" | "Break"
-  timeRunning: boolean
+  timeRemaining: number
+  mode: "Session" | "Break"
+  isRunning: boolean
 }
